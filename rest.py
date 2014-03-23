@@ -50,7 +50,7 @@ ax.plot(roots, np.zeros_like(roots), 'bx')
 
 ax.plot(roots, values, 'r+')
 
-ax.legend((r'$p \in \mathrm{Pol}_4(\mathbb{R})$', r'$\mathrm{rest}_S(p)$', r'$v \in \mathbb{R}^S$'))
+ax.legend((r'$p \in \mathrm{Pol}_4(\mathbb{R})$', r'$\mathrm{rest}_S(p) = \mathbf{0}$', r'$g \in \mathbb{R}^S$'))
 
 width_pt = 341
 width_in = 341 / 72.27
