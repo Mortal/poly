@@ -1,0 +1,199 @@
+\documentclass[article,oneside,a4paper]{memoir}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{libertine}
+\usepackage[sc]{mathpazo}
+\renewcommand\ttdefault{txtt}
+
+\usepackage[final]{microtype}
+
+\usepackage{amsmath,amssymb}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.8}
+
+% You should use \rfig instead of \ref directly.
+\newcommand{\rfig}[1]{Figure~\ref{fig:#1}}
+
+% Asymptotic upper bound.
+\newcommand{\BigO}{\mathcal{O}}
+
+% Our favorite example of a field.
+\newcommand{\reals}{\mathbb{R}}
+
+% Vector space of polynomials.
+\newcommand{\Pol}[2]{\mathrm{Pol}_#1(\reals^#2)}
+\newcommand{\PolDn}{\Pol Dn}
+
+% Set of monomials generating the polynomial vector space.
+\newcommand{\Mon}[2]{\mathrm{Mon}_{#1,#2}}
+\newcommand{\MonDn}{\Mon Dn}
+
+% \StoR is the family of functions f : S -> \reals.
+\newcommand{\StoR}{\reals^S}
+
+% Restriction map restricting a function V -> \reals to S -> \reals.
+\newcommand{\rest}{\mathrm{rest}}
+\newcommand{\restS}{\rest_S}
+
+% The standard basis is the columns e_i of the identity matrix.
+\newcommand{\StandardBasis}{\mathcal{E}}
+
+% Matrix transpose.
+\newcommand{\T}{T}
+
+% Size of S.
+\newcommand{\Ssz}{|S|}
+
+% Vector.
+\newcommand{\V}[1]{\mathbf{#1}}
+
+\begin{document}
+
+\chapter{Preliminaries}
+
+\section{Vector spaces}
+
+\paragraph{Multivariate polynomials}
+The set of real-valued multivariate polynomials of degree at most $D$ in
+$n$-dimensional space, $\PolDn$, is a vector space with addition and scalar
+multiplication defined in the usual way.
+The degree of a monomial is the sum of its exponents,
+and the degree of a polynomial is the greatest degree of its monomials
+with a non-zero coefficient.
+For polynomials of degree at most $D$, we define the set of monomials as
+\[\MonDn = \{X_1^{e_1} X_2^{e_2} \dots X_n^{e_n} \mid \sum_{i=1}^n e_i \leq D\}.\]
+This set of monomials forms a basis for the vector space $\PolDn$,
+so the dimension of $\PolDn$ is equal to the number of basis vectors in $\MonDn$ which is
+\[\begin{pmatrix} D + n \\ D \end{pmatrix}.\]
+
+In our examples where $n = 2$, we define our polynomials using the formals $X$
+and $Y$ instead of $X_1$ and $X_2$.
+
+\paragraph{Functions on a finite domain}
+Similarly, the set of functions from a finite set
+$S = \{s_1, \dots, s_{\Ssz}\}$ into $\reals$,
+denoted $\StoR$, is a vector space of dimension $\Ssz$;
+the basis we consider is the standard basis $\StandardBasis$
+consisting of the $\Ssz$ functions $e_i : S \to \reals$
+each mapping $s_i$ to $1$ and the others to $0$.
+The coordinate vector of a function $f : S \to \reals$
+is simply $[f]_{\StandardBasis} = ( f(s_1), \dots, f(s_{\Ssz}) )^\T$.
+
+Another view of $\StoR$ is that we have relabeled
+the coordinates of the $\Ssz$-dimensional space $\reals^{\Ssz}$
+to the points in $S$,
+but viewing $\StoR$ as a function space will be useful later on.
+
+\chapter{Constructing a polynomial given a set of roots}
+
+Given a set of $D$ roots in $\reals$,
+say $\{-1, 1, 4, 6\}$,
+it should be easy to see that a degree-$D$ polynomial with these roots is
+\[f(x) = (x + 1)(x - 1)(x - 4)(x - 6) = x^4 - 10 x^3 + 23 x^2 + 10 x - 24.\]
+In one dimension, this construction is trivial,
+but it is not apparent how to generalize this to multivariate polynomials.
+What happens if we apply a bit of linear algebra?
+
+\fancybreak{* * *}
+
+The \emph{restriction map}
+\[\restS : \PolDn \to \StoR\]
+restricts a polynomial $p : \reals^n \to \reals$ to just the finite subset
+$S \subset \reals^n$. In other words, if $p \in \PolDn$
+and $f = \restS(p)$, then in order to evaluate $f$ at a point $s \in S$,
+we simply let $f(s) = p(s)$. If a polynomial $p$ is zero on all of $S$,
+then $\restS(p) = \V 0_{\StoR}$, the zero element (or zero function) of $\StoR$.
+For an example of $\restS$, see \rfig{rest}.
+
+\begin{figure}
+\input{rest.pgf}
+\caption{
+  Polynomial $p$ of degree 4 in $\reals$ along with its restriction
+  $\restS(p)$ and another function in $\StoR$.
+}
+\label{fig:rest}
+\end{figure}
+
+The map $\restS$ is a linear map from the vector space $\PolDn$ % of dimension $\BigO(D^n)$
+to the vector space $\StoR$. % of dimension $\Ssz$.
+When the dimension of the domain of a linear map is strictly greater than the
+dimension of its range, it follows that the linear map has a non-trivial kernel.
+Put simply, when $D$ is large enough, we can find a non-zero polynomial of
+degree $D$ that becomes the zero function when viewed as a function in $\StoR$!
+In fact, it turns out that for any point set $S \subset \reals^n$,
+we can find a non-zero polynomial of degree $\BigO(n\Ssz^{1/n})$
+that is zero on all the points in $S$,
+since the dimension of $\PolDn$ is on the order of $\BigO(D^n)$.
+
+Using the set of monomials $\MonDn$ as our basis for $\PolDn$,
+and the basis $\StandardBasis$ for $\StoR$ previously introduced,
+we can write the matrix representation of the linear map $\restS$ as follows:
+
+\[
+  M_{\MonDn, \StandardBasis}(\restS)
+  = \left( [m_i]_\StandardBasis \mid m_i \in \MonDn \right).
+\]
+
+Using this matrix representation, we can solve a linear system of equations
+in order to find a non-zero polynomium that is zero on all points in a finite point set.
+
+For example, let us aim for points on a circle with diameter 5.
+We set $S = \{(0, 1), (2, 0), (4, 1), (4, 4), (2, 5), (0, 4)\} \subset \reals^2$
+and we wish to set up a linear system of equations for a polynomial in $\Pol22$.
+In our system $A\V x = \V 0$,
+each row of $A$ will correspond to a root in $S$
+with corresponding function value $0$ on the right hand side,
+and each column of $A$ will correspond to a monomial in $\Mon22$:
+\begin{gather*}
+  A =
+  M_{\Mon22, \StandardBasis}(\restS)
+  =
+  (m_i(S) \mid m_i \in \Mon22)
+      \\
+    \newcommand{\row}[1]{%
+    1(#1) & X(#1) & Y(#1) & X^2(#1) & XY(#1) & Y^2(#1)}%
+= \begin{pmatrix}
+  \row{0, 1} \\
+  \row{2, 0} \\
+  \row{4, 1} \\
+  \row{4, 4} \\
+  \row{2, 5} \\
+  \row{0, 4}
+\end{pmatrix}
+\\
+= \begin{pmatrix}
+  1 & 0 & 1 & 0 & 0 & 1 \\
+  1 & 2 & 0 & 4 & 0 & 0 \\
+  1 & 4 & 1 & 16 & 4 & 1 \\
+  1 & 4 & 4 & 16 & 16 & 16 \\
+  1 & 2 & 5 & 4 & 10 & 25 \\
+  1 & 0 & 4 & 0 & 0 & 16
+\end{pmatrix}.
+\end{gather*}
+Notice how in each column of $A$ we applied a monomial of $\Pol22$ to the given roots $S$.
+
+If we solve the system of equations $A\V x = \V 0$, we find the family of solutions
+\[
+  \V x = (4a, -4a, -5a, a, 0, a)^\T, a \in \reals
+\]
+corresponding to the family of polynomials
+\[
+  4a - 4ax - 5ay + ax^2 + ay^2 = a((x - 2)^2 + (y - \frac 52)^2 - \frac{25}{4}), a \in \reals
+\]
+which are exactly the polynomials with zero set equal to the circle
+of diameter 5 containing the points $S$.
+
+
+\begin{figure}
+\input{20points.pgf}
+\caption{
+  The algebraic curve is the zero set of a degree 5 polynomial in $\reals^2$
+  that has been fit to 20 roots uniformly sampled from $[0,100]^2$.
+}
+\label{fig:20}
+\end{figure}
+
+\end{document}
