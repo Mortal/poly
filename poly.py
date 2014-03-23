@@ -22,6 +22,8 @@ import matplotlib.pyplot as plt
 import sympy
 import sympy.solvers
 import numpy as np
+import scipy
+import scipy.ndimage
 import math
 import time
 import itertools
@@ -142,6 +144,7 @@ def polynomial_through(roots, degree, xs, *, general=False, quick=True, verbose=
 def min_degree_polynomial_through(roots, xs, *, final_verbose=True, **kwargs):
     max_degree = next(filter(lambda d: len(monomials(xs, d)) > len(roots), itertools.count(1)))
     min_degree = 1
+    #min_degree = max_degree
     while min_degree < max_degree:
         print("Search for smallest feasible degree in [%d, %d]"
                 % (min_degree, max_degree))
@@ -236,21 +239,60 @@ def main():
         golden_mean = (math.sqrt(5)-1.0)/2.0
         fig.set_size_inches(width_in, width_in * golden_mean)
         fig.savefig('20points.pgf')
+    elif 'time' in sys.argv:
+        dims = 2
+        xs = default_dimensions(dims)
+        for degree in itertools.count(7):
+            n = len(monomials(xs, degree)) - 1
+            roots = tuple(map(tuple, 100*np.random.random((n, dims))))
+            #degree = next(filter(lambda d: len(monomials(xs, d)) > len(roots), itertools.count(1)))
+            t1 = time.time()
+            p = polynomial_through(roots=roots, degree=degree, xs=xs)
+            t2 = time.time()
+            print("%d\t%d\t%g" % (degree, n, t2-t1))
+            if not p:
+                print("Infeasible")
+    elif sys.argv[1] == 'image':
+        dims = 2
+
+        img_array = scipy.ndimage.imread(sys.argv[2], flatten=True)
+        h, w = img_array.shape
+        cs = scipy.cumsum(img_array.reshape(-1))
+        cs /= cs[-1]
+        n = 44
+        vs = np.random.random(n)
+        i = np.searchsorted(cs, vs)
+        print(i)
+        i, j = (i % w), (i // w)
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111, aspect='equal')
+        ax.axis('equal')
+        #ax.imshow(img_array)
+
+        roots = list(zip(i, j))
+        print(roots)
+        make_plot(ax=ax, dims=dims, roots=roots)
+
+        plt.show()
     else:
+
         dims = 2
 
         #roots = ((0, 0), (2, sympy.Rational(1,2)), (1, 2), (3, 3))
 
         #roots = tuple((2*i, 2+i) for i in range(7))
 
-        #n = 14
-        #roots = tuple(map(tuple, 100*np.random.random((n, dims))))
+        degree = 12
+        xs = default_dimensions(dims)
+        n = len(monomials(xs, degree)) - 1
+        roots = tuple(map(tuple, 100*np.random.random((n, dims))))
         #roots = [(x, sympy.exp(x - 1)) for x in [sympy.Rational(i, n-1) for i in range(n)]]
 
         #dims = 1
         #roots = [[x] for x in (-1, 1, 4, 6)]
 
-        roots = ((0, 1), (2, 0), (4, 1), (4, 4), (2, 5), (0, 4))
+        #roots = ((0, 1), (2, 0), (4, 1), (4, 4), (2, 5), (0, 4))
 
         fig = plt.figure()
         ax = fig.add_subplot(111, aspect='equal')
