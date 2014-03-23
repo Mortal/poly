@@ -1,4 +1,4 @@
-\documentclass[article,oneside,a4paper]{memoir}
+\documentclass[oneside,a4paper]{memoir}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -10,6 +10,8 @@
 \usepackage[final]{microtype}
 
 \usepackage{amsmath,amssymb}
+
+\chapterstyle{madsen}
 
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.8}
@@ -52,6 +54,11 @@
 
 \begin{document}
 
+\title{Application of linear algebra\penalty-1 to multivariate root setting}
+\author{Mathias Rav}
+\date{\today}
+\maketitle
+
 \chapter{Preliminaries}
 
 \section{Vector spaces}
@@ -87,7 +94,9 @@ the coordinates of the $\Ssz$-dimensional space $\reals^{\Ssz}$
 to the points in $S$,
 but viewing $\StoR$ as a function space will be useful later on.
 
-\chapter{Constructing a polynomial given a set of roots}
+\chapter{Polynomials from root sets}
+
+\section{The case in $\reals$ (when $n = 1$)}
 
 Given a set of $D$ roots in $\reals$,
 say $\{-1, 1, 4, 6\}$,
@@ -97,7 +106,7 @@ In one dimension, this construction is trivial,
 but it is not apparent how to generalize this to multivariate polynomials.
 What happens if we apply a bit of linear algebra?
 
-\fancybreak{* * *}
+\section{Generalizing to higher dimension}
 
 The \emph{restriction map}
 \[\restS : \PolDn \to \StoR\]
@@ -139,6 +148,8 @@ we can write the matrix representation of the linear map $\restS$ as follows:
 
 Using this matrix representation, we can solve a linear system of equations
 in order to find a non-zero polynomium that is zero on all points in a finite point set.
+
+\section{Example: Circle in $\reals^2$}
 
 For example, let us aim for points on a circle with diameter 5.
 We set $S = \{(0, 1), (2, 0), (4, 1), (4, 4), (2, 5), (0, 4)\} \subset \reals^2$
