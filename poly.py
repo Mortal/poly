@@ -252,7 +252,7 @@ def main():
             print("%d\t%d\t%g" % (degree, n, t2-t1))
             if not p:
                 print("Infeasible")
-    elif sys.argv[1] == 'image':
+    elif len(sys.argv) > 2 and sys.argv[1] == 'image':
         dims = 2
 
         img_array = scipy.ndimage.imread(sys.argv[2], flatten=True)
@@ -283,16 +283,20 @@ def main():
 
         #roots = tuple((2*i, 2+i) for i in range(7))
 
-        degree = 12
-        xs = default_dimensions(dims)
-        n = len(monomials(xs, degree)) - 1
-        roots = tuple(map(tuple, 100*np.random.random((n, dims))))
-        #roots = [(x, sympy.exp(x - 1)) for x in [sympy.Rational(i, n-1) for i in range(n)]]
+        #degree = 7
+        #xs = default_dimensions(dims)
+        #n = len(monomials(xs, degree)) - 1
+        #roots = tuple(map(tuple, 100*np.random.random((n, dims))))
+        #roots = [(x, math.exp(x - 1)) for x in [i/(n-1) for i in range(n)]]
 
         #dims = 1
         #roots = [[x] for x in (-1, 1, 4, 6)]
 
         #roots = ((0, 1), (2, 0), (4, 1), (4, 4), (2, 5), (0, 4))
+
+        roots = [(x, y) for x in range(5) for y in range(5)]
+        n = len(roots)
+        #degree = next(filter(lambda d: len(monomials(xs, d)) > len(roots), itertools.count(1)))
 
         fig = plt.figure()
         ax = fig.add_subplot(111, aspect='equal')
