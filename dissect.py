@@ -17,12 +17,14 @@ def itermonomials_degree(xs, degree):
     for d in range(1, degree):
         for m in itermonomials_degree(xs, d):
             yield x ** (degree - d) * m
-    yield from itermonomials_degree(xs, degree)
+    for m in itermonomials_degree(xs, degree):
+        yield m
 
 def itermonomials(xs):
     """Yield all monomials over `xs` in grlex order."""
     for degree in itertools.count():
-        yield from itermonomials_degree(xs, degree)
+        for m in itermonomials_degree(xs, degree):
+            yield m
 
 def coefficient_tuples(Xs, monomials):
     for m in monomials:
