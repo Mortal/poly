@@ -89,7 +89,7 @@ def remove_denominator(e):
         print(d)
         return e
 
-def polynomial_through(roots, degree, xs, *, general=False, quick=True, verbose=False):
+def polynomial_through(roots, degree, xs, general=False, quick=True, verbose=False):
     ms = monomials(xs, degree)
     system = sympy.Matrix([[m.subs(zip(xs, x)) for m in ms] + [0] for x in roots])
     symbols = tuple(coefficients(xs, degree))
@@ -141,7 +141,7 @@ def polynomial_through(roots, degree, xs, *, general=False, quick=True, verbose=
 
     return p
 
-def min_degree_polynomial_through(roots, xs, *, final_verbose=True, **kwargs):
+def min_degree_polynomial_through(roots, xs, final_verbose=True, **kwargs):
     max_degree = next(filter(lambda d: len(monomials(xs, d)) > len(roots), itertools.count(1)))
     min_degree = 1
     #min_degree = max_degree
