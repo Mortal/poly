@@ -1,3 +1,4 @@
+# vim:set ft=python sw=4 et:
 import itertools
 import numpy as np
 import sympy
