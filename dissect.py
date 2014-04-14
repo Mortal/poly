@@ -28,8 +28,8 @@ def itermonomials(xs):
 
 def coefficient_tuples(Xs, monomials):
     for m in monomials:
-        d = m.as_powers_dict()
-        yield tuple(int(d[X]) for X in Xs)
+        d = dict(m.as_powers_dict().items())
+        yield tuple(int(d.get(X, 0)) for X in Xs)
 
 def coefficient_names(tuples):
     for m in tuples:
