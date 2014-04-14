@@ -6,10 +6,10 @@ doc.pdf: doc.tex rest.pgf
 	latexmk -pdf $<
 
 rest.pgf: %.pgf: %.py
-	python $<
+	$(PYTHON) $<
 
 20points.pgf:
-	python poly.py $@
+	$(PYTHON) poly.py $@
 
 clean:
 	latexmk -c
