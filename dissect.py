@@ -82,7 +82,7 @@ def dissecting_polynomial_trial(As, Xs, threshold):
 def unit_vectors(d):
     return sympy.symbols(list('x%d' % (1+i) for i in range(d)))
 
-def well_dissecting_polynomial(As, threshold=7/8):
+def well_dissecting_polynomial(As, threshold=7.0/8.0):
     As = tuple(np.array(A) for A in As)
 
     # k: number of point sets
