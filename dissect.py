@@ -171,7 +171,7 @@ def partitioning_polynomial(P, r):
 def main():
     n = 2000
     d = 3
-    A = (n * np.random.random((n, d))).astype(np.int)
+    A = (n * np.random.random((n, d))).astype(np.int).astype(np.float)
     r = 50
     #ni = 10
     #As = tuple(zip(*[((0, a), (a, 0), (ni, a), (a, ni)) for a in range(ni)]))
