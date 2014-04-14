@@ -8,7 +8,8 @@ def itermonomials_degree(xs, degree):
     if not degree:
         yield sympy.S.One
         return
-    x, *xs = xs
+    x, xs = xs[0], xs[1:]
+
     if not xs:
         yield x ** degree
         return
