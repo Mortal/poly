@@ -47,6 +47,11 @@ def polynomial_through(roots, Xs):
         return Xs[0] - roots[0][0]
     sol = sympy.solvers.minsolve_linear_system(system, *symbols, quick=False)
     pol = sum(sol[s] * m for s, m in zip(symbols, ms) if s in sol)
+
+    #free = [s for s in symbols if pol.has(s)]
+    #for s in free:
+    #    pol = pol.subs(s, 1)
+
     #print("Solution:")
     #print(pol)
     #for k, v in sol.items():
