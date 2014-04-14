@@ -224,7 +224,7 @@ class LatexFormatter(mpl.ticker.FormatStrFormatter):
 def main():
     if '20points.pgf' in sys.argv:
         dims = 2
-        n = 20
+        n = 44
         roots = tuple(map(tuple, 100*np.random.random((n, dims))))
 
         fig = plt.figure()
